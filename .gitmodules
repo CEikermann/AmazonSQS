@@ -1,0 +1,12 @@
+[submodule "vendor/Symfony/Component/ClassLoader"]
+	path = vendor/Symfony/Component/ClassLoader
+	url = git@github.com:symfony/ClassLoader.git
+[submodule "vendor/apiTalk"]
+	path = vendor/apiTalk
+	url = git@github.com:CEikermann/apiTalk.git
+[submodule "vendor/Symfony/Component/BrowserKit"]
+	path = vendor/Symfony/Component/BrowserKit
+	url = git://github.com/symfony/BrowserKit.git
+[submodule "vendor/Symfony/Component/Serializer"]
+	path = vendor/Symfony/Component/Serializer
+	url = git://github.com/symfony/Serializer.git
