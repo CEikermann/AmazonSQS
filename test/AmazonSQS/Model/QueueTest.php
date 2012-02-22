@@ -5,21 +5,23 @@ namespace Test\AmazonSQS\Model;
 use AmazonSQS\Model\Message;
 use AmazonSQS\Model\Queue;
 
-class MessageTest extends \PHPUnit_Framework_TestCase
+class QueueTest extends \PHPUnit_Framework_TestCase
 {
 
     public function dpSetAndGetTest()
     {
         return array(
-            array('Queue', new Queue()),
-            array('MessageId', '123'),
-            array('ReceiptHandle', 'abc123'),
-            array('Md5OfBody', 'eff123'),
-            array('Body', 'raw body'),
-            array('SenderId', '567'),
-            array('SendTimestamp', '123456789'),
-            array('ApproximateReceiveCount', '1'),
-            array('ApproximateFirstReceiveTimestamp', '987654321'),
+            array('Name', 'QueueName123'),
+            array('Url', 'QueueUrl123'),
+            array('VisibilityTimeout', '123'),
+            array('ApproximateNumberOfMessages', '1'),
+            array('ApproximateNumberOfMessagesNotVisible', '2'),
+            array('CreatedTimestamp', '123456789'),
+            array('LastModifiedTimestamp', '987654321'),
+            array('QueueArn', 'queue:scope'),
+            array('MaximumMessageSize', '1024'),
+            array('Policy', 'blub'),
+            array('DelaySeconds', '1024'),
         );
     }
     
@@ -28,12 +30,12 @@ class MessageTest extends \PHPUnit_Framework_TestCase
      */
     public function testSetAndGet($name, $value)
     {
-        $message = new Message();
+        $queue = new Queue();
 
         $method = 'set' . $name;
-        $message->$method($value);
+        $queue->$method($value);
 
         $method = 'get' . $name;
-        $this->assertEquals($value, $message->$method(), 'Wrong value with ' . $name);
+        $this->assertEquals($value, $queue->$method(), 'Wrong value with ' . $name);
     }
 }
