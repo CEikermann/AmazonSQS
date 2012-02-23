@@ -47,6 +47,7 @@ class Client extends BaseClient
      * Send a raw HTTP request
      * 
      * @param \apiTalk\Request $request The request object
+     * @param int              $expires (Optional) The expire timestamp - Default: time() + 5
      * 
      * @return \apiTalk\Response The response object  
      */
@@ -73,6 +74,7 @@ class Client extends BaseClient
      * characters when appending strings.
      *
      * @param \apiTalk\Request $request A request object
+     * @param int              $expires (Optional) The expire timestamp - Default: time() + 5
      * 
      * @return \apiTalk\Request
      */
