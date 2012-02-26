@@ -38,10 +38,6 @@ class Queue
 
     public function setName($name)
     {
-        if (isset($this->name)) {
-            throw new \RuntimeException('Field "Queue::Name" is not editable!');
-        }
-
         $this->name = $name;
     }
 
@@ -52,10 +48,6 @@ class Queue
 
     public function setUrl($url)
     {
-        if (isset($this->url)) {
-            throw new \RuntimeException('Field "Queue::Url" is not editable!');
-        }
-
         $this->url = $url;
     }
 
@@ -66,10 +58,6 @@ class Queue
 
     public function setApproximateNumberOfMessages($approximateNumberOfMessages)
     {
-        if (isset($this->approximateNumberOfMessages)) {
-            throw new \RuntimeException('Field "Queue::ApproximateNumberOfMessages" is not editable!');
-        }
-
         $this->approximateNumberOfMessages = $approximateNumberOfMessages;
     }
 
@@ -80,10 +68,6 @@ class Queue
 
     public function setApproximateNumberOfMessagesNotVisible($approximateNumberOfMessagesNotVisible)
     {
-        if (isset($this->approximateNumberOfMessagesNotVisible)) {
-            throw new \RuntimeException('Field "Queue::ApproximateNumberOfMessagesNotVisible" is not editable!');
-        }
-
         $this->approximateNumberOfMessagesNotVisible = $approximateNumberOfMessagesNotVisible;
     }
 
@@ -94,10 +78,6 @@ class Queue
 
     public function setCreatedTimestamp($createdTimestamp)
     {
-        if (isset($this->createdTimestamp)) {
-            throw new \RuntimeException('Field "Queue::CreatedTimestamp" is not editable!');
-        }
-
         $this->createdTimestamp = $createdTimestamp;
     }
 
@@ -108,10 +88,6 @@ class Queue
 
     public function setLastModifiedTimestamp($lastModifiedTimestamp)
     {
-        if (isset($this->lastModifiedTimestamp)) {
-            throw new \RuntimeException('Field "Queue::LastModifiedTimestamp" is not editable!');
-        }
-
         $this->lastModifiedTimestamp = $lastModifiedTimestamp;
     }
 
@@ -122,10 +98,6 @@ class Queue
 
     public function setQueueArn($queueArn)
     {
-        if (isset($this->queueArn)) {
-            throw new \RuntimeException('Field "Queue::QueueArn" is not editable!');
-        }
-
         $this->queueArn = $queueArn;
     }
 
