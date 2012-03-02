@@ -1,9 +1,9 @@
 [submodule "vendor/Symfony/Component/ClassLoader"]
 	path = vendor/Symfony/Component/ClassLoader
-	url = git://git@github.com/symfony/ClassLoader.git
+	url = git://github.com/symfony/ClassLoader.git
 [submodule "vendor/apiTalk"]
 	path = vendor/apiTalk
-	url = git://git@github.com/CEikermann/apiTalk.git
+	url = git://github.com/CEikermann/apiTalk.git
 [submodule "vendor/Symfony/Component/BrowserKit"]
 	path = vendor/Symfony/Component/BrowserKit
 	url = git://github.com/symfony/BrowserKit.git
