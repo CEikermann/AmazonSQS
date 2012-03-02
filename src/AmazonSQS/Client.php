@@ -1,5 +1,14 @@
 <?php
 
+/**
+ * This file is part of the AmazonSQS package.
+ *
+ * (c) Christian Eikermann <christian@chrisdev.de>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace AmazonSQS;
 
 use apiTalk\Client as BaseClient;
@@ -59,20 +68,8 @@ class Client extends BaseClient
     }
 
     /**
-     * Computes the RFC 2104-compliant HMAC signature for request parameters
-     *
-     * This implements the Amazon Web Services signature, as per the following
-     * specification:
-     *
-     * 1. Sort all request parameters (including <tt>SignatureVersion</tt> and
-     * excluding <tt>Signature</tt>, the value of which is being created),
-     * ignoring case.
-     *
-     * 2. Iterate over the sorted list and append the parameter name (in its
-     * original case) and then its value. Do not URL-encode the parameter
-     * values before constructing this string. Do not use any separator
-     * characters when appending strings.
-     *
+     * Signed the request with the HMAC SHA256 algorithm
+     * 
      * @param \apiTalk\Request $request A request object
      * @param int              $expires (Optional) The expire timestamp - Default: time() + 5
      * 

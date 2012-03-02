@@ -1,5 +1,14 @@
 <?php
 
+/**
+ * This file is part of the AmazonSQS package.
+ *
+ * (c) Christian Eikermann <christian@chrisdev.de>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace AmazonSQS;
 
 use AmazonSQS\Storage\QueueStorage;
@@ -9,7 +18,7 @@ use AmazonSQS\Model\Message;
 use Symfony\Component\Serializer;
 
 /**
- * Description of Queue
+ * Manager class for AmazonSQS API 
  *
  * @author Christian Eikermann <christian@chrisdev.de>
  */
@@ -122,7 +131,7 @@ class Manager
     /**
      * Return the instance of Symfony Serializer
      * 
-     * @return Symfony\Component\Serializer\Serializer
+     * @return \Symfony\Component\Serializer\Serializer
      */
     public function getSerializer()
     {
@@ -136,7 +145,7 @@ class Manager
     /**
      * Set the instance of Symfony Serializer
      * 
-     * @param Serializer\Serializer $serializer
+     * @param \Symfony\Component\Serializer\Serializer $serializer
      * 
      * @return void 
      */
@@ -378,7 +387,7 @@ class Manager
     /**
      * Send one message to the queue
      * 
-     * @param \AmazonSQS\Model\Queue $queue
+     * @param \AmazonSQS\Model\Queue   $queue
      * @param \AmazonSQS\Model\Message $message
      * 
      * @return bool
@@ -508,9 +517,9 @@ class Manager
      * @param array  $params (Optional) Params
      * @param string $url    (Optional) URL
      * 
-     * @return boolean
+     * @return mixed
      * 
-     * @throws \Exception 
+     * @throws \RuntimeException 
      */
     public function call($action, $params = array(), $url = null)
     {
