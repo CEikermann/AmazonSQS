@@ -19,15 +19,6 @@ class Message
     private $approximateReceiveCount;
     private $approximateFirstReceiveTimestamp;
 
-    public function getUniqueKey()
-    {
-        if (!$this->getMessageId()) {
-            throw new \RuntimeException();
-        }
-        
-        return sha1($this->getMessageId());
-    }
-    
     public function getQueue()
     {
         return $this->queue;

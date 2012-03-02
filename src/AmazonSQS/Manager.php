@@ -406,11 +406,13 @@ class Manager
      * 
      * @return bool
      */
+    // @codeCoverageIgnoreStart
     public function updateMessage(Message $message)
     {
         // TODO: ChangeMessageVisibility
     }
-
+    // @codeCoverageIgnoreEnd
+    
     /**
      * Receive one messages from queue
      * 

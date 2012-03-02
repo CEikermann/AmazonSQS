@@ -20,6 +20,7 @@ class QueueTest extends \PHPUnit_Framework_TestCase
             array('LastModifiedTimestamp', '987654321'),
             array('QueueArn', 'queue:scope'),
             array('MaximumMessageSize', '1024'),
+            array('MessageRetentionPeriod', '123'),
             array('Policy', 'blub'),
             array('DelaySeconds', '1024'),
         );

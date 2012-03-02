@@ -46,7 +46,7 @@ class ClientTest extends \PHPUnit_Framework_TestCase
                            ->will($this->returnValue(new Response()));
         
         $time = mktime(12, 12, 12, 03, 05, 2012);
-        $request = new Request('http://www.test.com/path', Request::METHOD_POST, array('params' => 'some_value'));
+        $request = new Request('http://www.test.com/path', Request::METHOD_POST, array('params' => 'some_value', 'Signature' => 'old_signature'));
         
         $client = new Client('AccessKey', 'SecretKey', $mockAdapter);
         $response = $client->send($request, $time);

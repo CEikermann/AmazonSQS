@@ -80,9 +80,11 @@ class Client extends BaseClient
      */
     protected function signRequest(Request $request, $expires = null)
     {
+        // @codeCoverageIgnoreStart
         if (!$expires) {
             $expires = time() + 5;
         }
+        // @codeCoverageIgnoreEnd
         
         $request->setParameter('AWSAccessKeyId', $this->awsAccessKey);
         $request->setParameter('Version', '2011-10-01');

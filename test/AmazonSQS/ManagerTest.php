@@ -41,7 +41,31 @@ class ManagerTest extends \PHPUnit_Framework_TestCase
         $method = 'get' . $name;
         $this->assertEquals($value, $manager->$method(), 'Wrong value with ' . $name);
     }
-
+    
+    public function testGetClient()
+    {
+        $manager = new \AmazonSQS\Manager('accesskey', 'secretkey');
+        $client = $manager->getClient();
+        
+        $this->assertInstanceOf('\AmazonSQS\Client', $client, 'Client should be an instance of AmazonSQS\Client');
+    }
+    
+    public function testGetSerializer()
+    {
+        $manager = new \AmazonSQS\Manager('accesskey', 'secretkey');
+        $serializer = $manager->getSerializer();
+        
+        $this->assertInstanceOf('\Symfony\Component\Serializer\Serializer', $serializer, 'Serializer should be an instance of Symfony\Component\Serializer\Serializer');
+    }
+    
+    public function testGetQueueStorage()
+    {
+        $manager = new \AmazonSQS\Manager('accesskey', 'secretkey');
+        $storage = $manager->getQueueStorage();
+        
+        $this->assertInstanceOf('\AmazonSQS\Storage\QueueStorage', $storage, 'Storage should be an instance of \AmazonSQS\Storage\QueueStorage');
+    }
+    
     public function testGetUrl()
     {
         $manager = new Manager('blub', 'blub');
@@ -765,6 +789,26 @@ class ManagerTest extends \PHPUnit_Framework_TestCase
         
         $response = $manager->call('ExampleAction', array('SampleName' => 'SampleValue'), 'http://test.x/blub');
         $this->assertEquals(array('Message' => 'Value'), $response, 'Wrong response');
+    }
+    
+    public function testCallWithoutResult()
+    {
+        $xml = '<?xml version="1.0"?><root></root>';
+        
+        $response = new \apiTalk\Response($xml);
+        $client = $this->getMockBuilder('AmazonSQS\Client')
+                ->setConstructorArgs(array('accesskey', 'secretkey'))
+                ->getMock();
+        
+        $client->expects($this->once())
+               ->method('post')
+               ->with('http://test.x/blub', array('SampleName' => 'SampleValue', 'Action' => 'ExampleAction'))
+               ->will($this->returnValue($response));
+        
+        $manager = new \AmazonSQS\Manager('accesskey', 'secretkey');
+        $manager->setClient($client);
+        
+        $this->assertTrue($manager->call('ExampleAction', array('SampleName' => 'SampleValue'), 'http://test.x/blub'), 'Call should be return true');
     }
     
     public function testCallWithoutUrl()
