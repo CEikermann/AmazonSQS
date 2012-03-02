@@ -36,12 +36,12 @@ class ClientTest extends \PHPUnit_Framework_TestCase
         $response = $client->send($request, $time);
         
         $this->assertEquals('AccessKey', $request->getParameter('AWSAccessKeyId'), 'Wrong aws access key');
-        $this->assertEquals(gmdate('Y-m-d\TH:i:s\Z', $time), $request->getParameter('Expires'), 'Wrong expire date');
+        $this->assertEquals('2012-03-05T12:12:12Z', $request->getParameter('Expires'), 'Wrong expire date');
         $this->assertEquals('HmacSHA256', $request->getParameter('SignatureMethod'), 'Wrong signature method');
         $this->assertEquals('2', $request->getParameter('SignatureVersion'), 'Wrong signature version');
         $this->assertEquals('2011-10-01', $request->getParameter('Version'), 'Wrong version');
         $this->assertEquals('some_value', $request->getParameter('params'), 'Wrong custom value');
-        $this->assertEquals('BRtok0yeMJvMD8Muy+rK1AjQRTKHTL0d6urCPpoqqnc=', $request->getParameter('Signature'), 'Wrong signature');  
+        $this->assertEquals('50pYUTp5qyGfV7GcQhTbZCh6ZwFLQWcT1klC4km3QZ8=', $request->getParameter('Signature'), 'Wrong signature');  
     }
 
     public function testSendPost()
@@ -61,12 +61,12 @@ class ClientTest extends \PHPUnit_Framework_TestCase
         $response = $client->send($request, $time);
         
         $this->assertEquals('AccessKey', $request->getParameter('AWSAccessKeyId'), 'Wrong aws access key');
-        $this->assertEquals(gmdate('Y-m-d\TH:i:s\Z', $time), $request->getParameter('Expires'), 'Wrong expire date');
+        $this->assertEquals('2012-03-05T12:12:12Z', $request->getParameter('Expires'), 'Wrong expire date');
         $this->assertEquals('HmacSHA256', $request->getParameter('SignatureMethod'), 'Wrong signature method');
         $this->assertEquals('2', $request->getParameter('SignatureVersion'), 'Wrong signature version');
         $this->assertEquals('2011-10-01', $request->getParameter('Version'), 'Wrong version');
         $this->assertEquals('some_value', $request->getParameter('params'), 'Wrong custom value');
         $this->assertEquals('application/x-www-form-urlencoded', $request->getHeader('Content-Type'), 'Wrong content-type header');
-        $this->assertEquals('2HO/8LLZn3+epdgbbkkXiaZ1itqV0Ql5mxZQwCbZhF4=', $request->getParameter('Signature'), 'Wrong signature');  
+        $this->assertEquals('ViabijT4j0iLE62G+363QA/CW7kejwUQB7sN6GPGabs=', $request->getParameter('Signature'), 'Wrong signature');  
     }    
 }

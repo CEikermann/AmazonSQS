@@ -9,6 +9,8 @@
  * file that was distributed with this source code.
  */
 
+date_default_timezone_set('UTC'); 
+
 require_once __DIR__.'/../../vendor/Symfony/Component/ClassLoader/UniversalClassLoader.php';
 
 use Symfony\Component\ClassLoader\UniversalClassLoader;
