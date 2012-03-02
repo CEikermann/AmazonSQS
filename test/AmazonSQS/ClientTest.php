@@ -36,7 +36,7 @@ class ClientTest extends \PHPUnit_Framework_TestCase
         $response = $client->send($request, $time);
         
         $this->assertEquals('AccessKey', $request->getParameter('AWSAccessKeyId'), 'Wrong aws access key');
-        $this->assertEquals('2012-03-05T11:12:12Z', $request->getParameter('Expires'), 'Wrong expire date');
+        $this->assertEquals(gmdate('Y-m-d\TH:i:s\Z', $time), $request->getParameter('Expires'), 'Wrong expire date');
         $this->assertEquals('HmacSHA256', $request->getParameter('SignatureMethod'), 'Wrong signature method');
         $this->assertEquals('2', $request->getParameter('SignatureVersion'), 'Wrong signature version');
         $this->assertEquals('2011-10-01', $request->getParameter('Version'), 'Wrong version');
@@ -61,7 +61,7 @@ class ClientTest extends \PHPUnit_Framework_TestCase
         $response = $client->send($request, $time);
         
         $this->assertEquals('AccessKey', $request->getParameter('AWSAccessKeyId'), 'Wrong aws access key');
-        $this->assertEquals('2012-03-05T11:12:12Z', $request->getParameter('Expires'), 'Wrong expire date');
+        $this->assertEquals(gmdate('Y-m-d\TH:i:s\Z', $time), $request->getParameter('Expires'), 'Wrong expire date');
         $this->assertEquals('HmacSHA256', $request->getParameter('SignatureMethod'), 'Wrong signature method');
         $this->assertEquals('2', $request->getParameter('SignatureVersion'), 'Wrong signature version');
         $this->assertEquals('2011-10-01', $request->getParameter('Version'), 'Wrong version');
