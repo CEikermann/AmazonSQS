@@ -6,6 +6,12 @@ Description
 -----------------
 AmazonSQS is a PHP 5.3 library to talk with the Amazon SQS API.
 
+Dependencies
+-----------------
+- Symfony\ClassLoader
+- Symfony\Serializer
+- CEikermann\apiTalk
+-- Symfony\BrowserKit
 
 Example
 ----------------
