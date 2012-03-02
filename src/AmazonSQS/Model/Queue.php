@@ -15,7 +15,7 @@ use Symfony\Component\Serializer\Normalizer\NormalizableInterface;
 use Symfony\Component\Serializer\Normalizer\DenormalizableInterface;
 
 /**
- * 
+ * Model class for Queue objects
  *
  * @author Christian Eikermann <christian@chrisdev.de>
  */
