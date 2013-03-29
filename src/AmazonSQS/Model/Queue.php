@@ -34,6 +34,7 @@ class Queue
     private $messageRetentionPeriod;
     private $policy;
     private $delaySeconds;
+    private $receiveMessageWaitTimeSeconds;
 
     public function getUniqueKey()
     {
@@ -158,6 +159,16 @@ class Queue
     public function setDelaySeconds($delaySeconds)
     {
         $this->delaySeconds = $delaySeconds;
+    }
+
+    public function getReceiveMessageWaitTimeSeconds()
+    {
+        return $this->receiveMessageWaitTimeSeconds;
+    }
+
+    public function setReceiveMessageWaitTimeSeconds($waitTimeSeconds)
+    {
+        $this->receiveMessageWaitTimeSeconds = $waitTimeSeconds;
     }
 
 }
