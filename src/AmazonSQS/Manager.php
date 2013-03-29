@@ -395,7 +395,7 @@ class Manager
     public function sendMessage(Queue $queue, Message $message)
     {
         $params = array();
-        $params['MessageBody'] = $message->getBody();
+        $params['MessageBody'] = urlencode($message->getBody());
 
         $response = $this->call('SendMessage', $params, $queue->getUrl());
 
@@ -463,6 +463,7 @@ class Manager
         }
         
         $message = $this->getSerializer()->denormalize($data, '\AmazonSQS\Model\Message');
+        $message->setBody(urldecode($message->getBody()));
         $message->setQueue($queue);
         
         return $message;

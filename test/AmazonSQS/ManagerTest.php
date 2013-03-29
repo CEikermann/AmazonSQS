@@ -592,7 +592,7 @@ class ManagerTest extends \PHPUnit_Framework_TestCase
         
         $manager->expects($this->once())
                 ->method('call')
-                ->with('SendMessage', array('MessageBody' => 'Example body'), 'http://test.x/blub')
+                ->with('SendMessage', array('MessageBody' => 'Example+body'), 'http://test.x/blub')
                 ->will($this->returnValue(array()));
         
         $this->assertFalse($manager->sendMessage($queue, $message), 'SendMessage should be return false');
@@ -613,7 +613,7 @@ class ManagerTest extends \PHPUnit_Framework_TestCase
         
         $manager->expects($this->once())
                 ->method('call')
-                ->with('SendMessage', array('MessageBody' => 'Example body'), 'http://test.x/blub')
+                ->with('SendMessage', array('MessageBody' => 'Example+body'), 'http://test.x/blub')
                 ->will($this->returnValue(array('MessageId' => 'SomeId')));
         
         $this->assertTrue($manager->sendMessage($queue, $message), 'SendMessage should be return true');
