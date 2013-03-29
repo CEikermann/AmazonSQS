@@ -29,7 +29,7 @@ class ClientTest extends \PHPUnit_Framework_TestCase
                            ->method('send')
                            ->will($this->returnValue(new Response()));
         
-        $time = mktime(12, 12, 12, 03, 05, 2012);
+        $time = gmmktime(12, 12, 12, 03, 05, 2012);
         $request = new Request('http://www.test.com/path', Request::METHOD_GET, array('params' => 'some_value'));
         
         $client = new Client('AccessKey', 'SecretKey', $mockAdapter);
@@ -54,7 +54,7 @@ class ClientTest extends \PHPUnit_Framework_TestCase
                            ->method('send')
                            ->will($this->returnValue(new Response()));
         
-        $time = mktime(12, 12, 12, 03, 05, 2012);
+        $time = gmmktime(12, 12, 12, 03, 05, 2012);
         $request = new Request('http://www.test.com/path', Request::METHOD_POST, array('params' => 'some_value', 'Signature' => 'old_signature'));
         
         $client = new Client('AccessKey', 'SecretKey', $mockAdapter);
