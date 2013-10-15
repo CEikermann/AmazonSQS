@@ -433,6 +433,25 @@ class Manager
      */
     public function receiveMessage(Queue $queue, $visibilityTimeout = null, $loadMessageAttributes = false)
     {
+        $message = $this->receiveMessage($queue, 1, $visibilityTimeout, $loadAttributes);
+        if ( is_array($message) ) {
+            return $message[0];
+        } 
+        return $message;
+    }
+
+
+    /**
+     * Receive up to 10 messages from queue
+     * 
+     * @param Queue $queue Queue
+     * @param int   $maximumNumberOfMessages    Maximum Number of Messages to Receive (1..10)
+     * @param int   $visibilityTimeout     Visibility Timeout
+     * @param bool  $loadMessageAttributes Load message attributes
+     * 
+     * @return \AmazonSQS\Model\Message
+     */
+    public function receiveMessages(Queue $queue, $maximumNumberOfMessages = 10, $visibilityTimeout = null, $loadMessageAttributes = false) {
         $params = array();
         
         if ($visibilityTimeout) {
@@ -443,30 +462,42 @@ class Manager
             $params['AttributeName.1'] = 'All';
         }
         
+        $params['MaxNumberOfMessages'] = min(10,max(1,$maximumNumberOfMessages));
+
         $response = $this->call('ReceiveMessage', $params, $queue->getUrl());
+   
         if (!isset($response['Message'])) {
             // No message in queue
             return null;
         }
-        
+
         $data = $response['Message'];
-        if (isset($data['Attribute'])) {
-            foreach ($data['Attribute'] as $attribute) {
 
-                $key = lcfirst($attribute['Name']);
-                $value = $attribute['Value'];
+        if ( array_key_exists('Body', $data) ) {
+            $data = array($data);
+        }
 
-                $data[$key] = $value;
+        $messages = array();
+
+        foreach ( $data as $dataMessage ) {
+            if (isset($dataMessage['Attribute'])) {
+                foreach ($dataMessage['Attribute'] as $attribute) {
+
+                    $key = lcfirst($attribute['Name']);
+                    $value = $attribute['Value'];
+
+                    $dataMessage[$key] = $value;
+                }
+                
+                unset($dataMessage['Attribute']);
             }
             
-            unset($data['Attribute']);
+            $message = $this->getSerializer()->denormalize($dataMessage, '\AmazonSQS\Model\Message');
+            $message->setBody(urldecode($message->getBody()));
+            $message->setQueue($queue);
+            $messages[] = $message;
         }
-        
-        $message = $this->getSerializer()->denormalize($data, '\AmazonSQS\Model\Message');
-        $message->setBody(urldecode($message->getBody()));
-        $message->setQueue($queue);
-        
-        return $message;
+        return $messages;
     }
 
     /**
@@ -482,6 +513,26 @@ class Manager
         $params['ReceiptHandle'] = $message->getReceiptHandle();
         
         return $this->call('DeleteMessage', $params, $message->getQueue()->getUrl());
+    }
+
+    /**
+     * Delete a set of messages from queue
+     * 
+     * @param array $messages to be deleted
+     * 
+     * @return array
+     */
+    public function deleteMessageBatch(array $messages)
+    {
+        $params = array();
+        $i = 0 ;
+        foreach ( $messages as $message ) {
+            $params['DeleteMessageBatchRequestEntry' . $i . '.Id'] = $i;
+            $params['DeleteMessageBatchRequestEntry' . $i . '.ReceiptHandle'] = $message->getReceiptHandle();
+            $i++;            
+        }
+
+        return $this->call('DeleteMessageBatch', $params, $message->getQueue()->getUrl());
     }
 
     /**
