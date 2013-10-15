@@ -433,7 +433,7 @@ class Manager
      */
     public function receiveMessage(Queue $queue, $visibilityTimeout = null, $loadMessageAttributes = false)
     {
-        $message = $this->receiveMessage($queue, 1, $visibilityTimeout, $loadAttributes);
+        $message = $this->receiveMessages($queue, 1, $visibilityTimeout, $loadAttributes);
         if ( is_array($message) ) {
             return $message[0];
         } 
