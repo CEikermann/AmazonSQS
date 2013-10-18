@@ -752,6 +752,8 @@ class ManagerTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(2, count($message));
         $this->assertEquals($queue, $message[0]->getQueue(), 'Wrong queue in message1');
         $this->assertEquals($queue, $message[1]->getQueue(), 'Wrong queue in message2');
+        $this->assertInstanceOf('AmazonSQS\Model\Message', $message[0], 'Message[0] should be an instance of Message');
+        $this->assertInstanceOf('AmazonSQS\Model\Message', $message[1], 'Message[1] should be an instance of Message');        
         $this->assertEquals('Example Body1', $message[0]->getBody());
         $this->assertEquals('Example Body2', $message[1]->getBody());
     }
