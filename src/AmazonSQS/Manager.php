@@ -433,7 +433,7 @@ class Manager
      */
     public function receiveMessage(Queue $queue, $visibilityTimeout = null, $loadMessageAttributes = false)
     {
-        $message = $this->receiveMessages($queue, 1, $visibilityTimeout, $loadAttributes);
+        $message = $this->receiveMessages($queue, 1, $visibilityTimeout, $loadMessageAttributes);
         if ( is_array($message) ) {
             return $message[0];
         } 
@@ -449,7 +449,7 @@ class Manager
      * @param int   $visibilityTimeout     Visibility Timeout
      * @param bool  $loadMessageAttributes Load message attributes
      * 
-     * @return \AmazonSQS\Model\Message
+     * @return array
      */
     public function receiveMessages(Queue $queue, $maximumNumberOfMessages = 10, $visibilityTimeout = null, $loadMessageAttributes = false) {
         $params = array();

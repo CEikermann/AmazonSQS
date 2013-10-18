@@ -629,7 +629,7 @@ class ManagerTest extends \PHPUnit_Framework_TestCase
         
         $manager->expects($this->once())
                 ->method('call')
-                ->with('ReceiveMessage', array('VisibilityTimeout' => 123), 'http://test.x/blub')
+                ->with('ReceiveMessage', array('MaxNumberOfMessages' => 1, 'VisibilityTimeout' => 123), 'http://test.x/blub')
                 ->will($this->returnValue(array()));
         
         $queue = new Queue();
@@ -647,7 +647,7 @@ class ManagerTest extends \PHPUnit_Framework_TestCase
         
         $manager->expects($this->once())
                 ->method('call')
-                ->with('ReceiveMessage', array('AttributeName.1' => 'All'), 'http://test.x/blub')
+                ->with('ReceiveMessage', array('MaxNumberOfMessages' => 1, 'AttributeName.1' => 'All'), 'http://test.x/blub')
                 ->will($this->returnValue(array()));
         
         $queue = new Queue();
@@ -665,7 +665,7 @@ class ManagerTest extends \PHPUnit_Framework_TestCase
         
         $manager->expects($this->once())
                 ->method('call')
-                ->with('ReceiveMessage', array(), 'http://test.x/blub')
+                ->with('ReceiveMessage', array('MaxNumberOfMessages' => 1), 'http://test.x/blub')
                 ->will($this->returnValue(array('Message' => array('Body' => 'Example Body', 'Attribute' => array(array('Name' => 'SenderId', 'Value' => '123'))))));
         
         $queue = new Queue();
@@ -690,7 +690,72 @@ class ManagerTest extends \PHPUnit_Framework_TestCase
         $this->assertInstanceOf('AmazonSQS\Model\Message', $message, 'Message should be an instance of Message');
         $this->assertEquals($queue, $message->getQueue(), 'Wrong queue in message');
     }
-    
+
+    public function testReceiveMessages()
+    {
+        $manager = $this->getMockBuilder('AmazonSQS\Manager')
+                ->setConstructorArgs(array('accesskey', 'secretkey'))
+                ->setMethods(array('call'))
+                ->getMock();
+        
+        $manager->expects($this->once())
+                ->method('call')
+                ->with('ReceiveMessage', array('MaxNumberOfMessages' => 10), 'http://test.x/blub')
+                ->will($this->returnValue(array('Message' => array('Body' => 'Example Body', 'Attribute' => array(array('Name' => 'SenderId', 'Value' => '123'))))));
+        
+        $queue = new Queue();
+        $queue->setUrl('http://test.x/blub');
+        
+        $data = array();
+        $data['Body'] = 'Example Body';
+        $data['senderId'] = '123';
+        
+        $message = new Message();
+        
+        $serializer = $this->getMockBuilder('Symfony\Component\Serializer\Serializer')
+                           ->getMock();
+        $serializer->expects($this->at(0))
+                   ->method('denormalize')
+                   ->with($data, '\AmazonSQS\Model\Message')
+                   ->will($this->returnValue($message));
+        
+        $manager->setSerializer($serializer);
+        
+        $message = $manager->receiveMessages($queue);
+        $this->assertInternalType('array', $message, 'Message should be an array');
+        $this->assertEquals(1, count($message));
+        $this->assertEquals($queue, $message[0]->getQueue(), 'Wrong queue in message');
+    }
+
+    public function testReceiveMessagesWithMultipleInResponse()
+    {
+        $manager = $this->getMockBuilder('AmazonSQS\Manager')
+                ->setConstructorArgs(array('accesskey', 'secretkey'))
+                ->setMethods(array('call'))
+                ->getMock();
+        
+        $manager->expects($this->once())
+                ->method('call')
+                ->with('ReceiveMessage', array('MaxNumberOfMessages' => 10), 'http://test.x/blub')
+                ->will($this->returnValue(array(
+                    'Message' => array( 
+                        array('Body' => 'Example Body1', 'Attribute' => array(array('Name' => 'SenderId', 'Value' => '123'))),
+                        array('Body' => 'Example Body2', 'Attribute' => array(array('Name' => 'SenderId', 'Value' => '123')))
+                    ),
+                )));
+        
+        $queue = new Queue();
+        $queue->setUrl('http://test.x/blub');
+         
+        $message = $manager->receiveMessages($queue);
+        $this->assertInternalType('array', $message, 'Message should be an array');
+        $this->assertEquals(2, count($message));
+        $this->assertEquals($queue, $message[0]->getQueue(), 'Wrong queue in message1');
+        $this->assertEquals($queue, $message[1]->getQueue(), 'Wrong queue in message2');
+        $this->assertEquals('Example Body1', $message[0]->getBody());
+        $this->assertEquals('Example Body2', $message[1]->getBody());
+    }
+
     public function testDeleteMessage()
     {
         $queue = new Queue();
