@@ -14,6 +14,7 @@ namespace AmazonSQS;
 use AmazonSQS\Storage\QueueStorage;
 use AmazonSQS\Model\Queue;
 use AmazonSQS\Model\Message;
+use AmazonSQS\Model\DeleteMessageBatchResult;
 
 use Symfony\Component\Serializer;
 
@@ -518,9 +519,9 @@ class Manager
     /**
      * Delete a set of messages from queue
      * 
-     * @param array $messages to be deleted
+     * @param array of Messages to be deleted
      * 
-     * @return array
+     * @return DeleteMessageBatchResult
      */
     public function deleteMessageBatch(array $messages)
     {
@@ -532,7 +533,8 @@ class Manager
             $i++;            
         }
 
-        return $this->call('DeleteMessageBatch', $params, $message->getQueue()->getUrl());
+        $response = $this->call('DeleteMessageBatch', $params, $message->getQueue()->getUrl());       
+        return new DeleteMessageBatchResult($response);
     }
 
     /**

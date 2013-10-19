@@ -779,6 +779,44 @@ class ManagerTest extends \PHPUnit_Framework_TestCase
      
         $this->assertTrue($manager->deleteMessage($message), 'DeleteMessage should return false');
     }
+
+    public function testDeleteMessageBatch()
+    {
+        $queue = new Queue();
+        $queue->setUrl('http://test.x/blub');
+        
+        $message1 = new Message();
+        $message1->setReceiptHandle('example_receipt_handle1');
+        $message1->setQueue($queue);
+
+        $message2 = new Message();
+        $message2->setReceiptHandle('example_receipt_handle2');
+        $message2->setQueue($queue);        
+        
+        $messages = array($message1, $message2);
+
+        $manager = $this->getMockBuilder('AmazonSQS\Manager')
+                ->setConstructorArgs(array('accesskey', 'secretkey'))
+                ->setMethods(array('call'))
+                ->getMock();
+        
+        $manager->expects($this->once())
+                ->method('call')
+                ->with('DeleteMessageBatch', array(
+                    'DeleteMessageBatchRequestEntry0.ReceiptHandle' => 'example_receipt_handle1',
+                    'DeleteMessageBatchRequestEntry0.Id' => 0,
+                    'DeleteMessageBatchRequestEntry1.ReceiptHandle' => 'example_receipt_handle2',
+                    'DeleteMessageBatchRequestEntry1.Id' => 1,
+                ), 'http://test.x/blub')
+                ->will($this->returnValue(array(
+                    'DeleteMessageBatchResultEntry' => array(
+                        array('Id' => 0),
+                        array('Id' => 1) 
+                    )
+                )));
+     
+        $this->assertTrue($manager->deleteMessageBatch($messages)->succeeded(), 'DeleteMessage should return false');
+    }
     
     public function testLoadQueueAttributes()
     {
