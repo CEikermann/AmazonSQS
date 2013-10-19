@@ -13,8 +13,8 @@ namespace AmazonSQS\Model;
 
 class DeleteMessageBatchResult {
 
-	protected $entries = array();
-	protected $containsFailures = FALSE;
+	private $entries = array();
+	private $containsFailures = FALSE;
 
 	public function __construct($apiCallResponse = NULL) 
 	{

@@ -23,13 +23,13 @@ class DeleteMessageBatchResultEntry {
 	const CODE_INDEX = 'Code';
 	const ID_INDEX = 'Id';
 
-	function __construct($data = NULL) {
+	public function __construct($data = NULL) {
 		if ( is_array($data) ) {
 			$this->fromArray($data);
 		}
 	}
 
-	function fromArray($array) {
+	public function fromArray($array) {
 		$this->setId($array[DeleteMessageBatchResultEntry::ID_INDEX]);
 		
 		if ( array_key_exists(DeleteMessageBatchResultEntry::MESSAGE_INDEX, $array) ) 
@@ -48,47 +48,47 @@ class DeleteMessageBatchResultEntry {
 		}
 	}
 
-	function getId() 
+	public function getId() 
 	{
 		return $this->id;
 	}
 
-	function setId($id) 
+	public function setId($id) 
 	{
 		$this->id = $id;
 	}
 
-	function getSenderFault() 
+	public function getSenderFault() 
 	{
 		return $this->senderFault;
 	}
 
-	function setSenderFault($senderFault) 
+	public function setSenderFault($senderFault) 
 	{
 		$this->senderFault = $senderFault;
 	}
 
-	function getCode() 
+	public function getCode() 
 	{
 		return $this->code;
 	}
 
-	function setCode($code) 
+	public function setCode($code) 
 	{
 		$this->code = $code;
 	}
 
-	function getMessage() 
+	public function getMessage() 
 	{
 		return $this->message;
 	}
 
-	function setMessage($message) 
+	public function setMessage($message) 
 	{
 		$this->message = $message;
 	}
 
-	function isDeletionFailure() 
+	public function isDeletionFailure() 
 	{
 		return !is_null($this->getSenderFault()) || !is_null($this->getCode()) || !is_null($this->getMessage());
 	}
